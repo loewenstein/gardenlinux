@@ -70,6 +70,7 @@ def import_snapshot(
             'Format': 'raw',
             'Description': 'uploaded by gardenlinux-cicd',
         },
+        Encrypted=False,
     )
 
     import_task_id = res['ImportTaskId']
