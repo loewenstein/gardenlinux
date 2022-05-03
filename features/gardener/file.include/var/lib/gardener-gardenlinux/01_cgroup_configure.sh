@@ -44,7 +44,10 @@ function check_current_cgroup {
 }
 
 # no need to run if Gardener did not place a configuration for cgroups
-[ ! -f "$CGROUP_GARDENER" ] && exit 0
+if [ ! -f "$CGROUP_GARDENER" ]; then
+    echo "No desired settings for cgroup found at $CGROUP_GARDENER - nothing to do, exiting."
+    exit 0
+fi
 
 desired_cgroup=$(cat "$CGROUP_GARDENER")
 current_cgroup=$(check_current_cgroup)
@@ -71,6 +74,7 @@ else
 fi
 
 # update bootloader
+echo "updating the bootloader"
 /usr/local/sbin/update-syslinux
 
 if [[ "$desired_cgroup" == "${current_cgroup%% *}" ]]; then

@@ -16,7 +16,10 @@ function check_current_lsm {
 }
 
 # no need to run if Gardener did not place a configuration for Linux Security Module
-[ ! -f "$LSM_GARDENER" ] && exit 0
+if [ ! -f "$LSM_GARDENER" ]; then
+    echo "No desired settings for Linux Security Module found at $LSM_GARDENER - nothing to do, exiting."
+    exit 0
+fi
 
 desired_lsm=$(cat "$LSM_GARDENER")
 current_lsm=$(check_current_lsm)
@@ -43,6 +46,7 @@ else
 fi
 
 # update bootloader
+echo "updating the bootloader"
 /usr/local/sbin/update-syslinux
 
 if [[ "$desired_lsm" == "${current_lsm}" ]]; then

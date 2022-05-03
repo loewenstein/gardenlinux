@@ -22,7 +22,10 @@ function check_netfilter_backend {
 }
 
 # no need to run if Gardener did not place a configuration for netfilter backend
-[ ! -f "$NETFILTER_GARDENER" ] && exit 0
+if [ ! -f "$NETFILTER_GARDENER" ]; then
+    echo "No desired settings for netfilter backend found at $NETFILTER_GARDENER - nothing to do, exiting."
+    exit 0
+fi
 
 desired_nfb=$(cat "$NETFILTER_GARDENER")
 
